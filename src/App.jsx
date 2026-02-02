@@ -1,32 +1,34 @@
-import { useState } from "react";
-import Header from "./components/Header";
-import SearchBar from "./components/SearchBar";
-import ProjectForm from "./components/ProjectForm";
-import ProjectList from "./components/ProjectList";
-import "./styles/main.css";
+import { useState } from "react"
+import Header from "./components/Header"
+import SearchInput from "./components/SearchInput"
+import PortfolioList from "./components/PortfolioList"
+import AddItemForm from "./components/AddItemForm"
+import "./App.css"
 
 function App() {
-  const [projects, setProjects] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [items, setItems] = useState([
+    { id: 1, title: "Personal Website", description: "Simple HTML portfolio" },
+    { id: 2, title: "React App", description: "Single Page Application" }
+  ])
 
-  // Add a new project
-  const addProject = (project) => {
-    setProjects([...projects, project]);
-  };
+  const [search, setSearch] = useState("")
 
-  // Filter projects based on search
-  const filteredProjects = projects.filter((project) =>
-    project.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  function handleAddItem(newItem) {
+    setItems(prev => [...prev, newItem])
+  }
 
   return (
-    <>
+    <div className="container">
+      
       <Header />
-      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <ProjectForm addProject={addProject} />
-      <ProjectList projects={filteredProjects} />
-    </>
-  );
+
+      <AddItemForm onAdd={handleAddItem} />
+
+      <SearchInput value={search} onChange={setSearch} />
+
+      <PortfolioList items={items} query={search} />
+    </div>
+  )
 }
 
-export default App;
+export default App
